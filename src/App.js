@@ -1,5 +1,11 @@
+import { useRoutes } from "react-router-dom";
+
+import routes from "./routes";
+
 const App = () => {
-  return <h1>MyReads: A Book Tracking App</h1>;
+  const elements = useRoutes(routes);
+
+  return elements;
 };
 
 export default App;
