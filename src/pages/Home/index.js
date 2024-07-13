@@ -16,6 +16,22 @@ const BOOK_SHELF = {
 const HomePage = () => {
   const [shelves, setShelves] = useState({});
 
+  const handleBookShelfChange = async (book, shelf) => {
+    try {
+      await BookAPI.update(book, shelf);
+
+      const newShelves = { ...shelves };
+      newShelves[book.shelf] = newShelves[book.shelf].filter(
+        (x) => x.id !== book.id
+      );
+      newShelves[shelf].push({ ...book, shelf });
+
+      setShelves(newShelves);
+    } catch (error) {
+      console.log(`[Change Book Shelf]:: Error: `, error);
+    }
+  };
+
   useEffect(() => {
     const getData = async () => {
       const response = await BookAPI.getAll();
@@ -42,7 +58,14 @@ const HomePage = () => {
 
     if (books.length === 0) return <></>;
 
-    return <Bookshelf key={shelf} name={BOOK_SHELF[shelf]} books={books} />;
+    return (
+      <Bookshelf
+        key={shelf}
+        name={BOOK_SHELF[shelf]}
+        books={books}
+        onBookShelfChange={handleBookShelfChange}
+      />
+    );
   });
 
   return (

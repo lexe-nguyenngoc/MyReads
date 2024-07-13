@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import "./BookshelfChanger.scss";
 
@@ -35,10 +36,14 @@ const BOOK_SHELF_OPTIONS = [
   }
 ];
 
-const BookshelfChanger = () => {
+const BookshelfChanger = ({ value, onBookShelfChange }) => {
+  const handleChange = (e) => {
+    onBookShelfChange(e.target.value);
+  };
+
   return (
     <div className="book-shelf-changer">
-      <select>
+      <select onChange={handleChange} value={value}>
         {BOOK_SHELF_OPTIONS.map((option) => (
           <option
             key={option.key}
@@ -53,4 +58,8 @@ const BookshelfChanger = () => {
   );
 };
 
+BookshelfChanger.propTypes = {
+  value: PropTypes.string,
+  onBookShelfChange: PropTypes.func.isRequired
+};
 export default BookshelfChanger;

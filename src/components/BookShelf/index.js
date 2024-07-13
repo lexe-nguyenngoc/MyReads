@@ -5,10 +5,10 @@ import BookCard from "../BookCard";
 
 import "./Bookshelf.scss";
 
-const Bookshelf = ({ name, books }) => {
+const Bookshelf = ({ name, books, onBookShelfChange }) => {
   const renderedBooks = books.map((book) => (
     <li key={book.id}>
-      <BookCard data={book} />
+      <BookCard data={book} onBookShelfChange={onBookShelfChange} />
     </li>
   ));
 
@@ -24,7 +24,8 @@ const Bookshelf = ({ name, books }) => {
 
 Bookshelf.propTypes = {
   name: PropTypes.string.isRequired,
-  books: PropTypes.array.isRequired
+  books: PropTypes.array.isRequired,
+  onBookShelfChange: PropTypes.func.isRequired
 };
 
 export default Bookshelf;
