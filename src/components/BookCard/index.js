@@ -27,7 +27,7 @@ const BookCard = ({ data, onBookShelfChange }) => {
         />
       </div>
       <div className="book__title">{data.title}</div>
-      <div className="book__authors">{data.authors.join(", ")}</div>
+      <div className="book__authors">{data.authors?.join(", ")}</div>
     </div>
   );
 };

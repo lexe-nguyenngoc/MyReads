@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import * as BookAPI from "../../api/BooksAPI";
 
 import Bookshelf from "../../components/Bookshelf";
+import BookGrid from "../../components/BookGrid";
 
 import "./Home.scss";
 
@@ -16,20 +17,14 @@ const BOOK_SHELF = {
 const HomePage = () => {
   const [shelves, setShelves] = useState({});
 
-  const handleBookShelfChange = async (book, shelf) => {
-    try {
-      await BookAPI.update(book, shelf);
+  const handleBookShelfChange = (book, shelf) => {
+    const newShelves = { ...shelves };
+    newShelves[book.shelf] = newShelves[book.shelf].filter(
+      (x) => x.id !== book.id
+    );
+    newShelves[shelf].push({ ...book, shelf });
 
-      const newShelves = { ...shelves };
-      newShelves[book.shelf] = newShelves[book.shelf].filter(
-        (x) => x.id !== book.id
-      );
-      newShelves[shelf].push({ ...book, shelf });
-
-      setShelves(newShelves);
-    } catch (error) {
-      console.log(`[Change Book Shelf]:: Error: `, error);
-    }
+    setShelves(newShelves);
   };
 
   useEffect(() => {
@@ -59,12 +54,9 @@ const HomePage = () => {
     if (books.length === 0) return <></>;
 
     return (
-      <Bookshelf
-        key={shelf}
-        name={BOOK_SHELF[shelf]}
-        books={books}
-        onBookShelfChange={handleBookShelfChange}
-      />
+      <Bookshelf key={shelf} name={BOOK_SHELF[shelf]}>
+        <BookGrid books={books} onBookShelfChange={handleBookShelfChange} />
+      </Bookshelf>
     );
   });
 

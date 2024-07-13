@@ -6,7 +6,7 @@ import "./BookshelfChanger.scss";
 const BOOK_SHELF_OPTIONS = [
   {
     key: "default",
-    value: "none",
+    value: "default",
     label: "Move to...",
     disabled: true
   },
@@ -36,7 +36,7 @@ const BOOK_SHELF_OPTIONS = [
   }
 ];
 
-const BookshelfChanger = ({ value, onBookShelfChange }) => {
+const BookshelfChanger = ({ value = "none", onBookShelfChange }) => {
   const handleChange = (e) => {
     onBookShelfChange(e.target.value);
   };
@@ -62,4 +62,5 @@ BookshelfChanger.propTypes = {
   value: PropTypes.string,
   onBookShelfChange: PropTypes.func.isRequired
 };
+
 export default BookshelfChanger;
