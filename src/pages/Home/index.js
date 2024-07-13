@@ -4,6 +4,8 @@ import * as BookAPI from "../../api/BooksAPI";
 
 import BookShelf from "../../components/BookShelf";
 
+import "./Home.scss";
+
 const BOOK_SHELF = {
   currentlyReading: "Currently Reading",
   wantToRead: "Want To Read",
@@ -42,7 +44,19 @@ const HomePage = () => {
     return <BookShelf key={shelf} name={BOOK_SHELF[shelf]} books={books} />;
   });
 
-  return <div>{renderedShelves}</div>;
+  return (
+    <div className="list-books">
+      <div className="list-books-title">
+        <h1>MyReads</h1>
+      </div>
+      <div className="list-books-content">
+        <div>{renderedShelves}</div>
+      </div>
+      <div className="open-search">
+        <a>Add a book</a>
+      </div>
+    </div>
+  );
 };
 
 export default HomePage;

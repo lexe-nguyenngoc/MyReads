@@ -1,16 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
+
 import BookCard from "../BookCard";
+
+import "./BookShelf.scss";
 
 const BookShelf = ({ name, books }) => {
   const renderedBooks = books.map((book) => (
-    <BookCard key={book.id} data={book} />
+    <li key={book.id}>
+      <BookCard data={book} />
+    </li>
   ));
 
   return (
-    <div className="book-shelf">
-      <h3>{name}</h3>
-      <div>{renderedBooks}</div>
+    <div className="bookshelf">
+      <h2 className="bookshelf-title">{name}</h2>
+      <div className="bookshelf-books">
+        <ol className="books-grid">{renderedBooks}</ol>
+      </div>
     </div>
   );
 };
