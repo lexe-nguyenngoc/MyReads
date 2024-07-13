@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import * as BookAPI from "../../api/BooksAPI";
 
-import BookShelf from "../../components/BookShelf";
+import Bookshelf from "../../components/Bookshelf";
 
 import "./Home.scss";
 
@@ -42,7 +42,7 @@ const HomePage = () => {
 
     if (books.length === 0) return <></>;
 
-    return <BookShelf key={shelf} name={BOOK_SHELF[shelf]} books={books} />;
+    return <Bookshelf key={shelf} name={BOOK_SHELF[shelf]} books={books} />;
   });
 
   return (
