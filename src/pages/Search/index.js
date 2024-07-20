@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import * as BookAPI from "../../api/BooksAPI";
@@ -6,38 +6,45 @@ import * as BookAPI from "../../api/BooksAPI";
 import BookGrid from "../../components/BookGrid";
 
 import "./Search.scss";
+import { useDebounce } from "@uidotdev/usehooks";
 
 const MAX_RESULTS = 20;
 
 const SearchPage = () => {
   const [books, setBooks] = useState([]);
-  const debouncedRef = useRef();
-
-  const fetchBooks = async (query) => {
-    const booksFetched = await BookAPI.search(query, MAX_RESULTS);
-
-    if (!Array.isArray(booksFetched)) {
-      console.log("[Search Books]:: Error: ", booksFetched);
-      setBooks([]);
-      return;
-    }
-
-    setBooks(booksFetched);
-  };
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const handleSearchChange = (e) => {
-    clearTimeout(debouncedRef.current);
-
-    const query = e.target.value.trim();
-    if (!query) return;
-
-    debouncedRef.current = setTimeout(() => fetchBooks(query), 200);
+    setSearchTerm(e.target.value);
   };
 
   const handleBookshelfChange = (book, shelf) => {
     const newBooks = books.map((x) => (x.id === book.id ? { ...x, shelf } : x));
     setBooks(newBooks);
   };
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      if (!debouncedSearchTerm) return;
+
+      const booksFetched = await BookAPI.search(
+        debouncedSearchTerm,
+        MAX_RESULTS
+      );
+      console.log(booksFetched);
+
+      if (!Array.isArray(booksFetched)) {
+        console.log("[Search Books]:: Error: ", booksFetched);
+        setBooks([]);
+        return;
+      }
+
+      setBooks(booksFetched);
+    };
+
+    fetchBooks();
+  }, [debouncedSearchTerm]);
 
   return (
     <div className="search-books">
@@ -49,12 +56,15 @@ const SearchPage = () => {
           <input
             type="text"
             placeholder="Search by title, author, or ISBN"
+            value={searchTerm}
             onChange={handleSearchChange}
           />
         </div>
       </div>
       <div className="search-books__results">
-        <BookGrid books={books} onBookShelfChange={handleBookshelfChange} />
+        {!!searchTerm.trim() && (
+          <BookGrid books={books} onBookShelfChange={handleBookshelfChange} />
+        )}
       </div>
     </div>
   );
