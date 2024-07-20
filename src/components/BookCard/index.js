@@ -18,7 +18,9 @@ const BookCard = ({ data, onBookShelfChange }) => {
           style={{
             width: 128,
             height: 193,
-            backgroundImage: `url("${data.imageLinks.thumbnail}")`
+            backgroundImage: `url("${
+              data.imageLinks?.thumbnail || "https://i.imgur.com/J5LVHEL.jpg"
+            }")`
           }}
         ></div>
         <BookshelfChanger
