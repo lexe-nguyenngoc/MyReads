@@ -1,19 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useDebounce } from "@uidotdev/usehooks";
 
 import * as BookAPI from "../../api/BooksAPI";
 
 import BookGrid from "../../components/BookGrid";
 
 import "./Search.scss";
-import { useDebounce } from "@uidotdev/usehooks";
 
 const MAX_RESULTS = 20;
 
 const SearchPage = () => {
   const [books, setBooks] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const debouncedSearchTerm = useDebounce(searchTerm.trim(), 300);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -28,6 +30,7 @@ const SearchPage = () => {
     const fetchBooks = async () => {
       if (!debouncedSearchTerm) return;
 
+      setIsLoading(true);
       const booksFetched = await BookAPI.search(
         debouncedSearchTerm,
         MAX_RESULTS
@@ -40,6 +43,7 @@ const SearchPage = () => {
         return;
       }
 
+      setIsLoading(false);
       setBooks(booksFetched);
     };
 
@@ -62,8 +66,12 @@ const SearchPage = () => {
         </div>
       </div>
       <div className="search-books__results">
-        {!!searchTerm.trim() && (
+        {isLoading && <p>Loading...</p>}
+        {!!debouncedSearchTerm.trim() && (
           <BookGrid books={books} onBookShelfChange={handleBookshelfChange} />
+        )}
+        {!isLoading && !!debouncedSearchTerm && books.length === 0 && (
+          <p>No book match with your input: {debouncedSearchTerm}</p>
         )}
       </div>
     </div>
