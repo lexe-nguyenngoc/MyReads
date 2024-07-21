@@ -20,13 +20,16 @@ const BookDetailPage = () => {
 
   useEffect(() => {
     const fetchBook = async () => {
-      const data = await BookAPI.get(params.id);
-      console.log(data);
+      try {
+        const data = await BookAPI.get(params.id);
 
-      setBook(data);
+        setBook(data);
+      } catch (error) {
+        navigate("/404");
+      }
     };
     fetchBook();
-  }, [params.id]);
+  }, [params.id, navigate]);
 
   if (!book) return <p>Loading...</p>;
 
