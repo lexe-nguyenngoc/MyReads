@@ -3,16 +3,12 @@ import { Link } from "react-router-dom";
 
 import * as BookAPI from "../../api/BooksAPI";
 
+import { BOOK_SHELF } from "../../constants/book";
+
 import Bookshelf from "../../components/Bookshelf";
 import BookGrid from "../../components/BookGrid";
 
 import "./Home.scss";
-
-const BOOK_SHELF = {
-  currentlyReading: "Currently Reading",
-  wantToRead: "Want To Read",
-  read: "Read"
-};
 
 const HomePage = () => {
   const [shelves, setShelves] = useState({});

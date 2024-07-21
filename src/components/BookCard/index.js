@@ -5,9 +5,13 @@ import BookshelfChanger from "../BookshelfChanger";
 
 import "./BookCard.scss";
 
-const BookCard = ({ data, onBookShelfChange }) => {
+const BookCard = ({ data, onBookShelfChange, onBookClick }) => {
   const handleBookShelfChange = (shelf) => {
     onBookShelfChange(data, shelf);
+  };
+
+  const handleBookClick = () => {
+    onBookClick(data);
   };
 
   return (
@@ -28,7 +32,9 @@ const BookCard = ({ data, onBookShelfChange }) => {
           onBookShelfChange={handleBookShelfChange}
         />
       </div>
-      <div className="book__title">{data.title}</div>
+      <div className="book__title" onClick={handleBookClick}>
+        {data.title}
+      </div>
       <div className="book__authors">{data.authors?.join(", ")}</div>
     </div>
   );
@@ -36,7 +42,8 @@ const BookCard = ({ data, onBookShelfChange }) => {
 
 BookCard.propTypes = {
   data: PropTypes.object.isRequired,
-  onBookShelfChange: PropTypes.func.isRequired
+  onBookShelfChange: PropTypes.func.isRequired,
+  onBookClick: PropTypes.func.isRequired
 };
 
 export default BookCard;
