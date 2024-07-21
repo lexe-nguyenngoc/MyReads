@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { useDebounce } from "@uidotdev/usehooks";
 
 import * as BookAPI from "../../api/BooksAPI";
@@ -9,10 +9,14 @@ import BookGrid from "../../components/BookGrid";
 import "./Search.scss";
 
 const MAX_RESULTS = 20;
+const KEY_SEARCH = "_search";
 
 const SearchPage = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [books, setBooks] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(
+    searchParams.get(KEY_SEARCH) || ""
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const debouncedSearchTerm = useDebounce(searchTerm.trim(), 300);
@@ -30,6 +34,7 @@ const SearchPage = () => {
     const fetchBooks = async () => {
       if (!debouncedSearchTerm) return;
 
+      setSearchParams({ [KEY_SEARCH]: debouncedSearchTerm });
       setIsLoading(true);
       const [searchBooks, allBooks] = await Promise.all([
         BookAPI.search(debouncedSearchTerm, MAX_RESULTS),
@@ -51,7 +56,7 @@ const SearchPage = () => {
     };
 
     fetchBooks();
-  }, [debouncedSearchTerm]);
+  }, [debouncedSearchTerm, setSearchParams]);
 
   return (
     <div className="search-books">
