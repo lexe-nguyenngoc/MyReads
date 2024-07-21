@@ -31,20 +31,23 @@ const SearchPage = () => {
       if (!debouncedSearchTerm) return;
 
       setIsLoading(true);
-      const booksFetched = await BookAPI.search(
-        debouncedSearchTerm,
-        MAX_RESULTS
-      );
-      console.log(booksFetched);
+      const [searchBooks, allBooks] = await Promise.all([
+        BookAPI.search(debouncedSearchTerm, MAX_RESULTS),
+        BookAPI.getAll()
+      ]);
 
-      if (!Array.isArray(booksFetched)) {
-        console.log("[Search Books]:: Error: ", booksFetched);
+      setIsLoading(false);
+      if (!Array.isArray(searchBooks)) {
+        console.log("[Search Books]:: Error: ", searchBooks);
         setBooks([]);
         return;
       }
 
-      setIsLoading(false);
-      setBooks(booksFetched);
+      const updatedBooks = searchBooks.map(
+        (book) => allBooks.find((x) => x.id === book.id) || book
+      );
+
+      setBooks(updatedBooks);
     };
 
     fetchBooks();
