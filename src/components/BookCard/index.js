@@ -35,7 +35,9 @@ const BookCard = ({ data, onBookShelfChange, onBookClick }) => {
       <div className="book__title" onClick={handleBookClick}>
         {data.title}
       </div>
-      <div className="book__authors">{data.authors?.join(", ")}</div>
+      <div className="book__authors">
+        {data.authors?.join(", ") || "Unknown"}
+      </div>
     </div>
   );
 };

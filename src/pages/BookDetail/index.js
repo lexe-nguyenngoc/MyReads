@@ -46,7 +46,8 @@ const BookDetailPage = () => {
           Writers: <b>{book.authors?.join(", ") || "Unknown"}</b>
         </p>
         <p>
-          Rating: {book.averageRating} ⭐ | Shelf: {BOOK_SHELF[book.shelf]}
+          Rating: {book.averageRating} ⭐ | Shelf:{" "}
+          {BOOK_SHELF[book.shelf] || "None"}
         </p>
         <p>Categories: {book.categories?.join(", ") || "Unknown"}</p>
         <div className="book-detail__action">
