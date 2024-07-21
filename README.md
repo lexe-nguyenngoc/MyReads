@@ -9,7 +9,35 @@ This project use [Create React App](https://github.com/facebook/create-react-app
 
 `/search`: search page, you can type in the search box and then the list of books will be appear match with what you type
 
+`/book/:id`: book detail page, you can click on title of the book to access this page. This page includes more data from the book
+
 `/*`: page not found, when you address invalid route
+
+## Structure
+
+```bash
+MyReads
+   ├── README.md
+   ├── package.json
+   ├── package-lock.json
+   ├── public
+   │     ├── favicon.ico
+   │     ├── index.html
+   │     ├── logo192.png
+   │     ├── logo512.png
+   │     ├── manifest.json
+   │     └── robots.txt
+   └── src
+         ├── api
+         ├── assets
+         ├── components
+         ├── constants
+         ├── pages
+         ├── App.js
+         ├── index.js
+         ├── index.scss
+         └── routes.js
+```
 
 ## Steps
 
